@@ -1,0 +1,33 @@
+{
+  "name": "courtside-app",
+  "version": "1.0.0",
+  "description": "Courtside GamePlan reservation platform for sports courts in Cagayan de Oro.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "lint": "echo \"No linter configured\"",
+    "test": "echo \"No automated tests configured\" && exit 0"
+  },
+  "keywords": [],
+  "author": "Courtside Dev Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "joi": "^18.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.19.3",
+    "morgan": "^1.10.1",
+    "node-cron": "^4.2.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

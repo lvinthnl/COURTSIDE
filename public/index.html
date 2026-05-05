@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Courtside GamePlan | Reserve Your Court</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee&family=Montserrat:wght@300;500;600;700&family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="hero">
+      <video class="hero-video" autoplay muted loop playsinline>
+        <source src="./images/hero-video.mp4" type="video/mp4" />
+        <!-- Fallback to static image if video not available -->
+      </video>
+      <div class="hero-overlay"></div>
+      <nav class="nav">
+        <div class="logo logo-animated" aria-label="Courtside GamePlan" tabindex="0">
+          <span class="logo-word" data-text="Courtside">
+            Courtside
+            <span class="logo-word-layer" data-text="Courtside"></span>
+            <span class="logo-word-layer" data-text="Courtside"></span>
+          </span>
+          <span class="logo-word accent" data-text="GamePlan">
+            GamePlan
+            <span class="logo-word-layer" data-text="GamePlan"></span>
+            <span class="logo-word-layer" data-text="GamePlan"></span>
+          </span>
+        </div>
+        <div class="nav-links">
+          <a href="#bookingSection" id="navBookLink" class="nav-scroll-link">Book Now</a>
+          <a href="#courts">Courts</a>
+          <a href="#community">Community</a>
+          <button class="btn btn-outline" id="loginButton">Sign In</button>
+        </div>
+      </nav>
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>Command the Court. Own Your Game.</h1>
+          <p>
+            Real-time court availability, powered by Kagay-anon energy. Book your slot, show up ready, and feel the rush.
+          </p>
+          <a href="#bookingSection" class="btn btn-primary" id="heroBookBtn">Book A Court</a>
+        </div>
+        <!-- Your Reservations section - always visible -->
+        <div class="your-reservations-section" id="yourReservationsSection">
+          <div class="reservations-header">
+            <h3>Your Reservations</h3>
+            <span class="reservations-count" id="reservationsCount"></span>
+          </div>
+          <div class="reservations-list" id="reservationsList">
+            <p class="no-reservations">Log in to view your reservations</p>
+          </div>
+        </div>
+      </div>
+      <div class="gradient-text-container">
+        <p class="gradient-text">Command the Court. Own Your Game.</p>
+      </div>
+    </header>
+
+    <main>
+      <section id="courts" class="courts-section">
+        <div class="section-header">
+          <h2>Featured Courts</h2>
+          <p>Choose your sport and court. Book your slot in 3 simple steps.</p>
+        </div>
+        <div class="tomorrow-maintenance" id="tomorrowMaintenance">
+          <h4>Maintenance Tomorrow</h4>
+          <div class="maintenance-list" id="maintenanceList">
+            <p class="no-maintenance">No maintenance scheduled for tomorrow</p>
+          </div>
+        </div>
+        <div class="courts-grid">
+          <article class="court-card" data-sport="basketball">
+            <div class="court-card-image">
+              <img src="./images/basketball.jpg" alt="Basketball Court" />
+              <div class="court-badge">Basketball</div>
+            </div>
+            <div class="court-card-content">
+              <h3>Basketball Court</h3>
+              <p>High-gloss hardwood, perfect for full-court runs and clutch moments.</p>
+              <div class="court-card-footer">
+                <span class="court-price">₱150<span class="price-unit">/hour</span></span>
+              </div>
+            </div>
+          </article>
+          <article class="court-card" data-sport="volleyball">
+            <div class="court-card-image">
+              <img src="./images/volleyball.jpg" alt="Volleyball Court" />
+              <div class="court-badge">Volleyball</div>
+            </div>
+            <div class="court-card-content">
+              <h3>Volleyball Court</h3>
+              <p>Pro-standard nets ready for every spike, dig, and set.</p>
+              <div class="court-card-footer">
+                <span class="court-price">₱150<span class="price-unit">/hour</span></span>
+              </div>
+            </div>
+          </article>
+          <article class="court-card" data-sport="badminton">
+            <div class="court-card-image">
+              <img src="./images/badminton.jpg" alt="Badminton Court" />
+              <div class="court-badge">Badminton</div>
+            </div>
+            <div class="court-card-content">
+              <h3>Badminton Court</h3>
+              <p>Lightning-fast surfaces to match your footwork intensity.</p>
+              <div class="court-card-footer">
+                <span class="court-price">₱150<span class="price-unit">/hour</span></span>
+              </div>
+            </div>
+          </article>
+          <article class="court-card" data-sport="tennis">
+            <div class="court-card-image">
+              <img src="./images/tennis.jpg" alt="Tennis Court" />
+              <div class="court-badge">Tennis</div>
+            </div>
+            <div class="court-card-content">
+              <h3>Tennis Court</h3>
+              <p>Baseline battles await with top-tier strings and surfaces.</p>
+              <div class="court-card-footer">
+                <span class="court-price">₱150<span class="price-unit">/hour</span></span>
+              </div>
+            </div>
+          </article>
+          <article class="court-card" data-sport="pickleball">
+            <div class="court-card-image">
+              <img src="./images/pickleball.jpg" alt="Pickleball Court" />
+              <div class="court-badge">Pickleball</div>
+            </div>
+            <div class="court-card-content">
+              <h3>Pickleball Court</h3>
+              <p>Fast-growing favorite with marked courts and ready paddles.</p>
+              <div class="court-card-footer">
+                <span class="court-price">₱150<span class="price-unit">/hour</span></span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="bookingSection" class="booking-section calendly-style">
+        <div class="section-header">
+          <h2>Book Your Court</h2>
+          <p>Select a sport, choose your court, pick a date, and confirm your time slot. ₱150 per hour.</p>
+        </div>
+        <div class="booking-calendly-container">
+          <div class="booking-calendar-col">
+            <div class="booking-field">
+              <label for="calendlySportSelect">Sport</label>
+              <select id="calendlySportSelect" required>
+                <option value="">Select Sport</option>
+                <option value="basketball">Basketball</option>
+                <option value="volleyball">Volleyball</option>
+                <option value="badminton">Badminton</option>
+                <option value="tennis">Tennis</option>
+                <option value="pickleball">Pickleball</option>
+              </select>
+            </div>
+            <div class="booking-field">
+              <label for="calendlyCourtSelect">Court</label>
+              <select id="calendlyCourtSelect" required disabled>
+                <option value="">Select a sport first</option>
+              </select>
+            </div>
+            <div class="calendly-calendar">
+              <div class="calendar-header">
+                <button class="calendar-nav-btn" id="calendlyPrevMonth">‹</button>
+                <h3 id="calendlyCurrentMonthYear"></h3>
+                <button class="calendar-nav-btn" id="calendlyNextMonth">›</button>
+              </div>
+              <div id="calendlyCalendarGrid" class="calendar-grid"></div>
+            </div>
+            <div class="timezone-info">Time zone: Asia/Manila</div>
+          </div>
+          
+          <div class="booking-timeslots-col">
+            <h3 id="calendlySelectedDateLabel">Select a Date & Time</h3>
+            <div id="calendlyTimeSlotsList" class="calendly-timeslots-list"></div>
+            <div id="calendlySummary" class="calendly-summary hidden"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="community" class="community-section">
+        <div class="community-content">
+          <h2>Kagay-anon Energy. Amplified.</h2>
+          <p>
+            Courtside GamePlan fuels the local scene with smooth booking flows, weekly performance recaps, and that Nike-inspired
+            adrenaline in every click. Follow the journey on Instagram to see live highlights and community moments.
+          </p>
+          <ul>
+            <li>Real-time sync with the front desk</li>
+            <li>Weekly performance stats every Sunday night</li>
+            <li>Maintenance blockers to protect the gear</li>
+            <li>Face-to-face payments secured by staff</li>
+          </ul>
+          <a class="btn btn-outline" href="https://www.tiktok.com/@courtside677" target="_blank" rel="noopener noreferrer"
+            >@courtsideph</a
+          >
+          <a class="btn btn-outline hidden" id="adminLink" href="./admin.html">Admin Dashboard</a>
+        </div>
+        <div class="community-card card">
+          <h3>Weekly Recap Snapshot</h3>
+          <div class="weekly-list" id="weeklyStatsList"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div class="footer-content">
+        <span>© 2025 Courtside GamePlan · Built for CDO athletes</span>
+        <div class="footer-links">
+          <a href="mailto:courtside@gmail.com">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <div class="modal hidden" id="authModal">
+      <div class="modal-content card">
+        <button class="modal-close" id="closeAuthModal">×</button>
+        <div class="modal-header">
+          <h3 id="modalTitle">Sign In</h3>
+        </div>
+        <form id="authForm">
+          <input type="hidden" id="authMode" value="login" />
+          <div class="input-group hidden" data-mode="signup">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" />
+          </div>
+          <div class="input-group hidden" data-mode="signup">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="tel" id="phoneNumber" />
+          </div>
+          <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required />
+          </div>
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" required />
+          </div>
+          <button type="submit" class="btn btn-primary" id="authSubmit">Sign In</button>
+          <p class="switch-text">
+            <span id="switchAuthMode">Need an account? <strong>Sign Up</strong></span>
+          </p>
+        </form>
+      </div>
+    </div>
+
+
+    <div class="modal hidden" id="bookingContactModal">
+      <div class="modal-content card">
+        <button class="modal-close" id="closeBookingContactModal">×</button>
+        <div class="modal-header">
+          <h3>Contact Information</h3>
+        </div>
+        <form id="bookingContactForm">
+          <div class="input-group">
+            <label for="bookingEmail">Email</label>
+            <input type="email" id="bookingEmail" required placeholder="Enter your email" />
+          </div>
+          <div class="input-group">
+            <label for="bookingPhone">Phone Number</label>
+            <input type="tel" id="bookingPhone" required placeholder="Enter your phone number" />
+          </div>
+          <button type="submit" class="btn btn-primary" id="finalizeBookingBtn">Finalize Booking</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal hidden" id="bookingWizardModal">
+      <div class="modal-content card">
+        <button class="modal-close" id="closeBookingWizardModal">×</button>
+        <div id="bookingWizardStepSport" class="wizard-step">
+          <h3>Select Sport</h3>
+          <select id="wizardSportSelect" required>
+            <option value="">Select Sport</option>
+            <option value="basketball">Basketball</option>
+            <option value="volleyball">Volleyball</option>
+            <option value="badminton">Badminton</option>
+            <option value="tennis">Tennis</option>
+            <option value="pickleball">Pickleball</option>
+          </select>
+          <button class="btn btn-primary" id="wizardNextSport">Next</button>
+        </div>
+        <div id="bookingWizardStepCourt" class="wizard-step hidden">
+          <h3>Select Court</h3>
+          <select id="wizardCourtSelect" required>
+            <option value="">Select a court</option>
+          </select>
+          <button class="btn btn-outline" id="wizardBackCourt">Back</button>
+          <button class="btn btn-primary" id="wizardNextCourt">Next</button>
+        </div>
+        <div id="bookingWizardStepDate" class="wizard-step hidden">
+          <h3>Select Date</h3>
+          <input type="date" id="wizardDateSelect" required />
+          <button class="btn btn-outline" id="wizardBackDate">Back</button>
+          <button class="btn btn-primary" id="wizardNextDate">Next</button>
+        </div>
+        <div id="bookingWizardStepTime" class="wizard-step hidden">
+          <h3>Select Time Slots</h3>
+          <div id="wizardTimeSlotsGrid"></div>
+          <button class="btn btn-outline" id="wizardBackTime">Back</button>
+          <button class="btn btn-primary" id="wizardNextTime">Next</button>
+        </div>
+        <div id="bookingWizardStepContact" class="wizard-step hidden">
+          <h3>Contact Information</h3>
+          <input type="email" id="wizardEmail" required placeholder="Enter your email" />
+          <input type="tel" id="wizardPhone" required placeholder="Enter your phone number" />
+          <button class="btn btn-outline" id="wizardBackContact">Back</button>
+          <button class="btn btn-primary" id="wizardNextContact">Next</button>
+        </div>
+        <div id="bookingWizardStepSummary" class="wizard-step hidden">
+          <h3>Booking Summary</h3>
+          <div id="wizardSummaryDetails"></div>
+          <button class="btn btn-outline" id="wizardBackSummary">Back</button>
+          <button class="btn btn-primary" id="wizardConfirmBooking">Confirm Booking</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>
+
