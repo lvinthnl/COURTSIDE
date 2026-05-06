@@ -25,6 +25,7 @@ const { seedDefaultAdmin } = require("./src/controllers/authController");
 const { seedCourts } = require("./src/utils/seedData");
 
 const app = express();
+app.set("trust proxy", 1);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {

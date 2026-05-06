@@ -31,14 +31,19 @@ const renderStats = (todayBookings = [], allReservations = []) => {
     return k === todayKey;
   });
 
-  const active = todays.filter((b) => !["cancelled", "completed"].includes(b.status));
-  const unpaid = active.filter((b) => !b.paymentStatus || b.paymentStatus.status !== "paid");
-  const checkedIn = active.filter((b) => b.status === "checked_in");
-  const revenue = todays
-    .filter((b) => b.paymentStatus && b.paymentStatus.status === "paid")
-    .reduce((sum, b) => sum + (b.estimatedCost || 0), 0);
+  const notCancelled = todays.filter((b) => b.status !== "cancelled");
+  const isPaid = (b) => b.paymentStatus && b.paymentStatus.status === "paid";
+  const paid = notCancelled.filter(isPaid);
+  const unpaid = notCancelled.filter((b) => !isPaid(b));
+  const checkedIn = notCancelled.filter((b) => b.status === "checked_in");
+  const revenue = paid.reduce(
+    (sum, b) => sum + ((b.paymentStatus && typeof b.paymentStatus.amount === "number")
+      ? b.paymentStatus.amount
+      : (b.estimatedCost || 0)),
+    0
+  );
 
-  if (elements.statTodayBookings) elements.statTodayBookings.textContent = active.length;
+  if (elements.statTodayBookings) elements.statTodayBookings.textContent = notCancelled.length;
   if (elements.statUnpaid) elements.statUnpaid.textContent = unpaid.length;
   if (elements.statCheckedIn) elements.statCheckedIn.textContent = checkedIn.length;
   if (elements.statRevenue) elements.statRevenue.textContent = `₱${revenue.toLocaleString()}`;

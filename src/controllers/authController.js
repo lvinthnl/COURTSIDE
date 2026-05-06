@@ -29,7 +29,7 @@ const signup = async (req, res, next) => {
 
     const token = generateToken({ userId: user._id, role: user.role });
     res
-      .cookie("token", token, { httpOnly: true, sameSite: "lax" })
+      .cookie("token", token, { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" })
       .status(201)
       .json({ message: "Signup successful", user: { id: user._id, fullName, email, phoneNumber, role: user.role } });
   } catch (err) {
@@ -58,7 +58,7 @@ const login = async (req, res, next) => {
 
     const token = generateToken({ userId: user._id, role: user.role });
     res
-      .cookie("token", token, { httpOnly: true, sameSite: "lax" })
+      .cookie("token", token, { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" })
       .status(200)
       .json({
         message: "Login successful",
