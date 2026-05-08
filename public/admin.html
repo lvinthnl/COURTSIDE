@@ -36,6 +36,10 @@
       <!-- 1. STAT STRIP -->
       <section class="dash-section dash-section-tight">
         <div class="stat-strip">
+          <div class="stat-card" data-stat="queue">
+            <span class="stat-label">Total Reservations</span>
+            <span class="stat-value" id="statTotalReservations">—</span>
+          </div>
           <div class="stat-card" data-stat="bookings">
             <span class="stat-label">Today's Bookings</span>
             <span class="stat-value" id="statTodayBookings">—</span>
@@ -43,10 +47,6 @@
           <div class="stat-card" data-stat="unpaid">
             <span class="stat-label">Unpaid</span>
             <span class="stat-value" id="statUnpaid">—</span>
-          </div>
-          <div class="stat-card" data-stat="active">
-            <span class="stat-label">Checked In</span>
-            <span class="stat-value" id="statCheckedIn">—</span>
           </div>
           <div class="stat-card" data-stat="revenue">
             <span class="stat-label">Today's Revenue</span>

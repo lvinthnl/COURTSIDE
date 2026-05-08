@@ -14,7 +14,7 @@ const elements = {
   adminTodayLabel: document.getElementById("adminTodayLabel"),
   statTodayBookings: document.getElementById("statTodayBookings"),
   statUnpaid: document.getElementById("statUnpaid"),
-  statCheckedIn: document.getElementById("statCheckedIn"),
+  statTotalReservations: document.getElementById("statTotalReservations"),
   statRevenue: document.getElementById("statRevenue"),
   openTimelineBtn: document.getElementById("openTimelineBtn"),
 };
@@ -35,7 +35,7 @@ const renderStats = (todayBookings = [], allReservations = []) => {
   const isPaid = (b) => b.paymentStatus && b.paymentStatus.status === "paid";
   const paid = notCancelled.filter(isPaid);
   const unpaid = notCancelled.filter((b) => !isPaid(b));
-  const checkedIn = notCancelled.filter((b) => b.status === "checked_in");
+  const totalReservations = (allReservations || []).filter((b) => b.status !== "cancelled").length;
   const revenue = paid.reduce(
     (sum, b) => sum + ((b.paymentStatus && typeof b.paymentStatus.amount === "number")
       ? b.paymentStatus.amount
@@ -45,7 +45,7 @@ const renderStats = (todayBookings = [], allReservations = []) => {
 
   if (elements.statTodayBookings) elements.statTodayBookings.textContent = notCancelled.length;
   if (elements.statUnpaid) elements.statUnpaid.textContent = unpaid.length;
-  if (elements.statCheckedIn) elements.statCheckedIn.textContent = checkedIn.length;
+  if (elements.statTotalReservations) elements.statTotalReservations.textContent = totalReservations;
   if (elements.statRevenue) elements.statRevenue.textContent = `₱${revenue.toLocaleString()}`;
 };
 
