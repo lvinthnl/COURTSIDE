@@ -757,23 +757,26 @@ const updateHeroStats = () => {
   }
 };
 
+let _reservationsTickTimer = null;
+const startReservationsAutoExpire = () => {
+  if (_reservationsTickTimer) return;
+  _reservationsTickTimer = setInterval(() => {
+    if (state.user) loadUserReservations();
+  }, 60 * 1000);
+};
+startReservationsAutoExpire();
+
 const loadUserReservations = async () => {
   if (!state.user || !elements.reservationsList) return;
   
   try {
     const reservations = await api.listReservations();
-    // Filter out cancelled and paid reservations, and only show upcoming ones (future dates)
     const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    
+
     const upcoming = reservations
       .filter(booking => {
-        const startTime = new Date(booking.startTime);
-        const bookingDate = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate());
-        // Only show if booking date is today or in the future, and not cancelled
-        // Paid reservations should still be visible to the user
-        return bookingDate >= today && 
-               booking.status !== "cancelled";
+        const endTime = new Date(booking.endTime);
+        return endTime > now && booking.status !== "cancelled";
       })
       .sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
     
