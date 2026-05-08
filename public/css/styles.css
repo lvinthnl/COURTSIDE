@@ -2049,6 +2049,12 @@ select {
   background: rgba(242, 92, 5, 0.05);
 }
 
+.walkin-form select option,
+.admin-body select option {
+  background: #1a1a1a;
+  color: var(--color-white);
+}
+
 .walkin-mini-calendar {
   margin-top: 0 !important;
   padding: 0.6rem 0.7rem;
