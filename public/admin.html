@@ -15,19 +15,21 @@
   <body class="admin-body admin-compact">
     <header class="admin-header">
       <div class="admin-header-left">
-        <div class="logo logo-clean" aria-label="Courtside GamePlan">
-          <span class="logo-word">Courtside</span>
-          <span class="logo-word accent">GamePlan</span>
+        <div class="logo logo-animated" aria-label="Courtside GamePlan" tabindex="0">
+          <span class="logo-word" data-text="Courtside">
+            Courtside
+            <span class="logo-word-layer" data-text="Courtside"></span>
+            <span class="logo-word-layer" data-text="Courtside"></span>
+          </span>
+          <span class="logo-word accent" data-text="GamePlan">
+            GamePlan
+            <span class="logo-word-layer" data-text="GamePlan"></span>
+            <span class="logo-word-layer" data-text="GamePlan"></span>
+          </span>
         </div>
-        <span class="live-pill" aria-label="Live status">
-          <span class="live-pill-dot"></span>LIVE
-        </span>
       </div>
       <div class="admin-actions">
         <span class="admin-today" id="adminTodayLabel"></span>
-        <button class="btn btn-outline btn-sm" id="openTimelineBtn" type="button">
-          Today's Timeline
-        </button>
         <button class="btn btn-primary btn-sm" id="adminLogout">Log Out</button>
       </div>
     </header>
@@ -68,6 +70,22 @@
               <button type="button" id="reservationsTabUnpaid" class="tab-button active">Unpaid</button>
               <button type="button" id="reservationsTabPaid" class="tab-button">Paid</button>
             </div>
+          </div>
+          <div class="reservations-filters">
+            <label class="field field-inline">
+              <span class="field-label">Filter</span>
+              <select id="reservationsDateFilter">
+                <option value="all">All dates</option>
+                <option value="today">Today</option>
+              </select>
+            </label>
+            <label class="field field-inline">
+              <span class="field-label">Sort</span>
+              <select id="reservationsSortOrder">
+                <option value="desc">Date: Newest first</option>
+                <option value="asc">Date: Oldest first</option>
+              </select>
+            </label>
           </div>
           <div class="tab-panels">
             <div id="todayReservations" class="timeline reservations-scroll" data-tab-panel="unpaid"></div>

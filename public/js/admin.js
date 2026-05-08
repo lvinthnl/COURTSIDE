@@ -16,8 +16,11 @@ const elements = {
   statUnpaid: document.getElementById("statUnpaid"),
   statTotalReservations: document.getElementById("statTotalReservations"),
   statRevenue: document.getElementById("statRevenue"),
-  openTimelineBtn: document.getElementById("openTimelineBtn"),
+  reservationsDateFilter: document.getElementById("reservationsDateFilter"),
+  reservationsSortOrder: document.getElementById("reservationsSortOrder"),
 };
+
+let _latestReservations = [];
 
 // Cache latest dashboard data so the timeline modal can render on demand
 let _latestTimelineData = { courts: [], bookings: [], courtsWithAvail: [] };
@@ -380,6 +383,37 @@ const showMaintenanceForSport = async (sport) => {
 };
 
 // ─── Reservation list renderer ────────────────────────────────────────────────
+
+const applyReservationFilters = () => {
+  const dateFilter = elements.reservationsDateFilter?.value || "all";
+  const sortOrder = elements.reservationsSortOrder?.value || "desc";
+
+  let list = _latestReservations.slice();
+
+  if (dateFilter === "today") {
+    const todayKey = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Manila" });
+    list = list.filter((b) => {
+      const k = new Date(b.startTime).toLocaleDateString("en-CA", { timeZone: "Asia/Manila" });
+      return k === todayKey;
+    });
+  }
+
+  list.sort((a, b) => {
+    const diff = new Date(a.startTime) - new Date(b.startTime);
+    return sortOrder === "asc" ? diff : -diff;
+  });
+
+  renderReservations(list);
+};
+
+const initReservationFilters = () => {
+  if (elements.reservationsDateFilter) {
+    elements.reservationsDateFilter.addEventListener("change", applyReservationFilters);
+  }
+  if (elements.reservationsSortOrder) {
+    elements.reservationsSortOrder.addEventListener("change", applyReservationFilters);
+  }
+};
 
 const renderReservations = (reservations) => {
   if (!elements.todayReservations) return;
@@ -1005,8 +1039,8 @@ const loadDashboard = async () => {
     ]);
     _allCourts = courts;
     renderCourts(data.courtCounts);
-    const sorted = (allReservations || []).slice().sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
-    renderReservations(sorted);
+    _latestReservations = allReservations || [];
+    applyReservationFilters();
     renderStats(data.todayBookings || [], allReservations || []);
     // For the timeline we need availability info (availableHoursByDate) per court
     // Fetch availability for today's date so extend modal can check free hours
@@ -1157,9 +1191,7 @@ const initialize = async () => {
   await ensureAdmin();
   setTodayLabel();
 
-  if (elements.openTimelineBtn) {
-    elements.openTimelineBtn.addEventListener("click", openTimelineModal);
-  }
+  initReservationFilters();
 
   let courts = [];
   try {

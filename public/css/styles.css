@@ -1200,6 +1200,33 @@ footer {
   margin-bottom: 0.75rem;
 }
 
+.reservations-filters {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.field-inline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.field-inline .field-label {
+  margin: 0;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+}
+
+.field-inline select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+}
+
 .tab-buttons {
   display: inline-flex;
   background: rgba(255,255,255,0.06);
