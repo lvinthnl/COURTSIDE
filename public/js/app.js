@@ -39,7 +39,6 @@ const bindElements = () => {
     authModeInput: document.getElementById("authMode"),
     modalTitle: document.getElementById("modalTitle"),
     authSubmit: document.getElementById("authSubmit"),
-    weeklyStatsList: document.getElementById("weeklyStatsList"),
     adminLink: document.getElementById("adminLink"),
     yourReservationsSection: document.getElementById("yourReservationsSection"),
     reservationsList: document.getElementById("reservationsList"),
@@ -1028,25 +1027,6 @@ const handleAuthSubmit = async (event) => {
   }
 };
 
-const loadWeeklyStats = async () => {
-  try {
-    const weeklyStats = await api.dashboardWeekly();
-    elements.weeklyStatsList.innerHTML = "";
-    (weeklyStats || []).forEach((row) => {
-      const item = document.createElement("div");
-      item.className = "weekly-item";
-      item.innerHTML = `
-        <span>${new Date(row.weekStart).toLocaleDateString()}</span>
-        <span>${row.sport.toUpperCase()}</span>
-        <span>${row.totalBookings} bookings · ${row.totalHours} hrs</span>
-      `;
-      elements.weeklyStatsList.appendChild(item);
-    });
-  } catch (error) {
-    console.warn("Weekly stats unavailable:", error.message);
-  }
-};
-
 const initAuthFlow = () => {
   elements.loginButton.addEventListener("click", async (evt) => {
     // If not signed in -> show auth modal
@@ -1481,7 +1461,6 @@ const initRealtimeUpdates = () => {
   socket.on("maintenanceUpdated", () => fetchAvailability());
   socket.on("dashboardRefresh", () => {
     fetchAvailability();
-    loadWeeklyStats();
     if (state.user) {
       loadUserReservations(); // Refresh user's reservations on dashboard refresh
     }
@@ -1527,7 +1506,6 @@ const initialize = async () => {
 
   await fetchCourts();
   await fetchAvailability();
-  await loadWeeklyStats();
   await loadTomorrowMaintenance();
 };
 
