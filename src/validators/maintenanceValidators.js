@@ -6,31 +6,22 @@ const maintenanceSchema = Joi.object({
     .required()
     .custom((value, helpers) => {
       const now = new Date();
-      if (value > now) {
-        return helpers.error("date.max");
+      if (value < now) {
+        return helpers.error("date.min");
       }
       return value;
     })
     .messages({
-      "date.max": "Start time cannot be in the future",
+      "date.min": "Start time cannot be in the past",
     }),
   endTime: Joi.date()
     .greater(Joi.ref("startTime"))
     .required()
-    .custom((value, helpers) => {
-      const now = new Date();
-      if (value > now) {
-        return helpers.error("date.max");
-      }
-      return value;
-    })
     .messages({
       "date.greater": "End time must be after start time",
-      "date.max": "End time cannot be in the future",
     }),
   remarks: Joi.string().max(250).allow("", null),
   status: Joi.string().valid("scheduled", "in_progress", "completed").default("scheduled"),
 });
 
 module.exports = { maintenanceSchema };
-

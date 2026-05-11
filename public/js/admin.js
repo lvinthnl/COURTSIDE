@@ -1114,23 +1114,23 @@ const initForms = (courts) => {
   const maintenanceStartInput = document.getElementById("maintenanceStart");
   const maintenanceEndInput = document.getElementById("maintenanceEnd");
 
-  const updateMaxDateTime = () => {
+  const updateMinDateTime = () => {
     const now = new Date();
-    const max = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-    maintenanceStartInput.setAttribute("max", max);
-    maintenanceEndInput.setAttribute("max", max);
+    const min = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    maintenanceStartInput.setAttribute("min", min);
+    maintenanceEndInput.setAttribute("min", min);
   };
 
-  updateMaxDateTime();
-  setInterval(updateMaxDateTime, 60000);
+  updateMinDateTime();
+  setInterval(updateMinDateTime, 60000);
 
   elements.maintenanceForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const startTime = new Date(document.getElementById("maintenanceStart").value);
     const endTime = new Date(document.getElementById("maintenanceEnd").value);
     const now = new Date();
-    if (startTime > now) { alert("Start time cannot be in the future."); return; }
-    if (endTime > now) { alert("End time cannot be in the future."); return; }
+    if (startTime < now) { alert("Start time cannot be in the past."); return; }
+    if (endTime <= startTime) { alert("End time must be after start time."); return; }
     try {
       await api.createMaintenance({
         courtId: document.getElementById("maintenanceCourtId").value,
@@ -1139,7 +1139,7 @@ const initForms = (courts) => {
         remarks: document.getElementById("maintenanceRemarks").value,
       });
       event.target.reset();
-      updateMaxDateTime();
+      updateMinDateTime();
       await loadDashboard();
       alert("Maintenance scheduled!");
     } catch (error) {
