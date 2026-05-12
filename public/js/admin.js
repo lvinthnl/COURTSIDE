@@ -186,11 +186,27 @@ const openPartialCancelModal = async (booking, onDone) => {
   const checkboxWrap = document.createElement("div");
   checkboxWrap.style.cssText = "display:flex;flex-direction:column;gap:8px;margin-bottom:1.2rem;";
 
+  if (uncancelledSlots.length > 1) {
+    const allLbl = document.createElement("label");
+    allLbl.style.cssText = "display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.9rem;font-weight:600;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,0.1);";
+    const allCb = document.createElement("input");
+    allCb.type = "checkbox";
+    allCb.style.width = "16px";
+    allCb.style.height = "16px";
+    allCb.addEventListener("change", () => {
+      checkboxWrap.querySelectorAll("input.hour-cb").forEach((cb) => { cb.checked = allCb.checked; });
+    });
+    allLbl.appendChild(allCb);
+    allLbl.appendChild(document.createTextNode("Select all hours"));
+    checkboxWrap.appendChild(allLbl);
+  }
+
   uncancelledSlots.forEach(({ hour, label }) => {
     const lbl = document.createElement("label");
     lbl.style.cssText = "display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.95rem;";
     const cb = document.createElement("input");
     cb.type = "checkbox";
+    cb.className = "hour-cb";
     cb.value = hour;
     cb.style.width = "16px";
     cb.style.height = "16px";
@@ -220,7 +236,7 @@ const openPartialCancelModal = async (booking, onDone) => {
   closeBtn.addEventListener("click", close);
 
   cancelBtn.addEventListener("click", async () => {
-    const checked = [...checkboxWrap.querySelectorAll("input:checked")].map((cb) => Number(cb.value));
+    const checked = [...checkboxWrap.querySelectorAll("input.hour-cb:checked")].map((cb) => Number(cb.value));
     if (checked.length === 0) {
       alert("Please select at least one hour to cancel.");
       return;
@@ -561,19 +577,10 @@ const renderReservations = (reservations) => {
         actionRow.style.cssText = "display:flex;justify-content:flex-end;margin-top:10px;";
         const cancelBtn = document.createElement("button");
         cancelBtn.className = "btn btn-outline";
-        cancelBtn.textContent = "Cancel Booking";
-        cancelBtn.addEventListener("click", async () => {
-          if (!confirm(`Cancel booking for ${booking.customer?.fullName || booking.walkInName || "this customer"}?`)) return;
-          try {
-            cancelBtn.disabled = true;
-            cancelBtn.textContent = "Cancelling...";
-            await api.cancelReservation(booking._id);
-            await loadDashboard();
-          } catch (err) {
-            cancelBtn.disabled = false;
-            cancelBtn.textContent = "Cancel Booking";
-            alert(err.message || "Failed to cancel booking");
-          }
+        const remaining = slots.filter((s) => !s.cancelled).length;
+        cancelBtn.textContent = remaining > 1 ? "Cancel Hours…" : "Cancel Booking";
+        cancelBtn.addEventListener("click", () => {
+          openPartialCancelModal(booking, async () => { await loadDashboard(); });
         });
         actionRow.appendChild(cancelBtn);
         content.appendChild(actionRow);
