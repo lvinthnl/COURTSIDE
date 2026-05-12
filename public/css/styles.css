@@ -495,7 +495,7 @@ form textarea:focus {
 }
 
 .tomorrow-maintenance {
-  margin: 0 0 2.5rem;
+  margin: 3rem 0 2.5rem;
   max-width: 720px;
   padding: 1.25rem 1.5rem;
   background: linear-gradient(135deg, rgba(242, 92, 5, 0.08), rgba(17, 17, 17, 0.85));
