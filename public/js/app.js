@@ -1603,13 +1603,23 @@ function updateCourtDropdown() {
   });
   calendlyCourtSelect.disabled = !sport;
 }
-calendlySportSelect.addEventListener("change", updateCourtDropdown);
+const bookingSection = document.getElementById("bookingSection");
+const updateCalendarLockState = () => {
+  if (!bookingSection) return;
+  bookingSection.classList.toggle("court-not-selected", !calendlyCourtSelect.value);
+};
+calendlySportSelect.addEventListener("change", () => {
+  updateCourtDropdown();
+  updateCalendarLockState();
+});
 calendlyCourtSelect.addEventListener("change", () => {
   calendlyState.court = calendlyCourtSelect.value;
+  updateCalendarLockState();
   renderCalendlyCalendar();
   calendlyTimeSlotsList.innerHTML = "";
   calendlySummary.classList.add("hidden");
 });
+updateCalendarLockState();
 function renderCalendlyCalendar() {
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   calendlyCurrentMonthYear.textContent = `${monthNames[calendlyMonth]} ${calendlyYear}`;
