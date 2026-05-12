@@ -1525,55 +1525,32 @@ const loadTodayMaintenance = async () => {
       return;
     }
     
-    // Group by sport
-    const bySport = {};
-    maintenance.forEach(m => {
-      const sport = m.court?.courtType || "unknown";
-      if (!bySport[sport]) bySport[sport] = [];
-      bySport[sport].push(m);
-    });
-    
     elements.maintenanceList.innerHTML = "";
-    Object.keys(bySport).forEach(sport => {
-      const items = bySport[sport];
-      const item = document.createElement("div");
-      item.className = "maintenance-item clickable-maintenance";
-      item.dataset.sport = sport;
-      item.style.cursor = "pointer";
-      
-      const sportName = sport.charAt(0).toUpperCase() + sport.slice(1);
-      item.innerHTML = `
-        <span class="maintenance-sport">${sportName}</span>
-        <span class="maintenance-count">${items.length} maintenance${items.length !== 1 ? "s" : ""}</span>
-      `;
-      
-      item.addEventListener("click", () => {
-        let message = `${sportName.toUpperCase()} Maintenance Today:\n\n`;
-        items.forEach(m => {
-          const start = new Date(m.startTime);
-          const end = new Date(m.endTime);
-          const courtName = m.court?.courtName || "Unknown Court";
-          const dateStr = start.toLocaleDateString("en-US", { 
-            weekday: "short", 
-            month: "short", 
-            day: "numeric" 
-          });
-          const timeStr = `${start.toLocaleTimeString("en-US", { 
-            hour: "2-digit", 
-            minute: "2-digit" 
-          })} - ${end.toLocaleTimeString("en-US", { 
-            hour: "2-digit", 
-            minute: "2-digit" 
-          })}`;
-          message += `${courtName}\n${dateStr} at ${timeStr}\n`;
-          if (m.remarks) message += `Remarks: ${m.remarks}\n`;
-          message += "\n";
-        });
-        alert(message);
+    const fmtHour = (d) => d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
+
+    maintenance
+      .slice()
+      .sort((a, b) => new Date(a.startTime) - new Date(b.startTime))
+      .forEach((m) => {
+        const item = document.createElement("div");
+        item.className = "maintenance-item";
+
+        const courtName = m.court?.courtName || "Unknown court";
+        const start = new Date(m.startTime);
+        const end = new Date(m.endTime);
+
+        const courtSpan = document.createElement("span");
+        courtSpan.className = "maintenance-sport";
+        courtSpan.textContent = courtName;
+
+        const timeSpan = document.createElement("span");
+        timeSpan.className = "maintenance-count";
+        timeSpan.textContent = `${fmtHour(start)} – ${fmtHour(end)}`;
+
+        item.appendChild(courtSpan);
+        item.appendChild(timeSpan);
+        elements.maintenanceList.appendChild(item);
       });
-      
-      elements.maintenanceList.appendChild(item);
-    });
   } catch (error) {
     console.error("Failed to load today's maintenance:", error);
     if (elements.maintenanceList) {
