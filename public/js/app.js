@@ -43,7 +43,7 @@ const bindElements = () => {
     yourReservationsSection: document.getElementById("yourReservationsSection"),
     reservationsList: document.getElementById("reservationsList"),
     reservationsCount: document.getElementById("reservationsCount"),
-    tomorrowMaintenance: document.getElementById("tomorrowMaintenance"),
+    todayMaintenance: document.getElementById("todayMaintenance"),
     maintenanceList: document.getElementById("maintenanceList"),
     navBookLink: document.getElementById("navBookLink"),
     heroVideo: document.getElementById("heroVideo"),
@@ -1509,18 +1509,18 @@ const initialize = async () => {
 
   await fetchCourts();
   await fetchAvailability();
-  await loadTomorrowMaintenance();
+  await loadTodayMaintenance();
 };
 
-const loadTomorrowMaintenance = async () => {
+const loadTodayMaintenance = async () => {
   if (!elements.maintenanceList) return;
-  
+
   try {
-    const maintenance = await api.getTomorrowMaintenance();
-    
+    const maintenance = await api.getTodayMaintenance();
+
     if (maintenance.length === 0) {
       if (elements.maintenanceList) {
-        elements.maintenanceList.innerHTML = "<p class='no-maintenance'>No maintenance scheduled for tomorrow</p>";
+        elements.maintenanceList.innerHTML = "<p class='no-maintenance'>No maintenance scheduled for today</p>";
       }
       return;
     }
@@ -1548,7 +1548,7 @@ const loadTomorrowMaintenance = async () => {
       `;
       
       item.addEventListener("click", () => {
-        let message = `${sportName.toUpperCase()} Maintenance Tomorrow:\n\n`;
+        let message = `${sportName.toUpperCase()} Maintenance Today:\n\n`;
         items.forEach(m => {
           const start = new Date(m.startTime);
           const end = new Date(m.endTime);
@@ -1575,7 +1575,7 @@ const loadTomorrowMaintenance = async () => {
       elements.maintenanceList.appendChild(item);
     });
   } catch (error) {
-    console.error("Failed to load tomorrow's maintenance:", error);
+    console.error("Failed to load today's maintenance:", error);
     if (elements.maintenanceList) {
       elements.maintenanceList.innerHTML = "<p class='no-maintenance'>Failed to load maintenance info</p>";
     }

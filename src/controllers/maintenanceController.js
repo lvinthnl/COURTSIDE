@@ -63,29 +63,25 @@ const updateMaintenance = async (req, res, next) => {
   }
 };
 
-const getTomorrowMaintenance = async (_req, res, next) => {
+const getTodayMaintenance = async (_req, res, next) => {
   try {
-    const now = new Date();
-    const tomorrow = new Date(now);
-    tomorrow.setDate(now.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-    
-    const dayAfterTomorrow = new Date(tomorrow);
-    dayAfterTomorrow.setDate(tomorrow.getDate() + 1);
-    
+    const todayKeyPH = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Manila" });
+    const todayStart = new Date(`${todayKeyPH}T00:00:00+08:00`);
+    const tomorrowStart = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000);
+
     const records = await Maintenance.find({
-      startTime: { $gte: tomorrow, $lt: dayAfterTomorrow },
+      startTime: { $gte: todayStart, $lt: tomorrowStart },
       status: { $ne: "completed" }
     })
       .populate("court")
       .populate("createdBy", "fullName")
       .lean();
-    
+
     res.status(200).json(records);
   } catch (err) {
     next(err);
   }
 };
 
-module.exports = { listMaintenance, createMaintenance, updateMaintenance, getTomorrowMaintenance };
+module.exports = { listMaintenance, createMaintenance, updateMaintenance, getTodayMaintenance };
 

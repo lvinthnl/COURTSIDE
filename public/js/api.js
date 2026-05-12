@@ -98,6 +98,6 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ ...payload, source: "walk_in" }),
     }),
-  getTomorrowMaintenance: () => request("/maintenance/tomorrow"),
+  getTodayMaintenance: () => request("/maintenance/today"),
 };
 

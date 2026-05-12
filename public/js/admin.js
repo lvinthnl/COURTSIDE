@@ -5,6 +5,7 @@ let currentUser = null;
 
 const elements = {
   liveCourtsGrid: document.getElementById("liveCourtsGrid"),
+  adminTodayMaintenanceList: document.getElementById("adminTodayMaintenanceList"),
   todayReservations: document.getElementById("todayReservations"),
   paidReservations: document.getElementById("paidReservations"),
   reservationsTabUnpaid: document.getElementById("reservationsTabUnpaid"),
@@ -356,18 +357,74 @@ const renderCourts = (courtCounts) => {
   });
 };
 
+const fmtTimeRange = (start, end) => `${fmtTimePH(start)} – ${fmtTimePH(end)}`;
+
+const loadTodayMaintenance = async () => {
+  if (!elements.adminTodayMaintenanceList) return;
+  try {
+    const records = await api.getTodayMaintenance();
+    const list = elements.adminTodayMaintenanceList;
+    list.innerHTML = "";
+
+    if (!records || records.length === 0) {
+      list.innerHTML = "<p class='muted'>No maintenance scheduled for today.</p>";
+      return;
+    }
+
+    records
+      .slice()
+      .sort((a, b) => new Date(a.startTime) - new Date(b.startTime))
+      .forEach((m) => {
+        const item = document.createElement("div");
+        item.className = "timeline-item";
+
+        const courtSpan = document.createElement("span");
+        courtSpan.style.fontWeight = "600";
+        courtSpan.textContent = m.court?.courtName || "Unknown court";
+
+        const sportSpan = document.createElement("span");
+        sportSpan.style.cssText = "font-size:0.85rem;opacity:0.8;";
+        const sport = m.court?.courtType ? m.court.courtType.charAt(0).toUpperCase() + m.court.courtType.slice(1) : "—";
+        sportSpan.textContent = sport;
+
+        const timeSpan = document.createElement("span");
+        timeSpan.textContent = fmtTimeRange(m.startTime, m.endTime);
+
+        const statusSpan = document.createElement("span");
+        statusSpan.className = "status-tag status-maintenance";
+        statusSpan.textContent = (m.status || "scheduled").replace(/_/g, " ");
+
+        item.appendChild(courtSpan);
+        item.appendChild(sportSpan);
+        item.appendChild(timeSpan);
+        item.appendChild(statusSpan);
+
+        if (m.remarks) {
+          const remarksSpan = document.createElement("span");
+          remarksSpan.style.cssText = "font-size:0.85rem;opacity:0.75;grid-column:1/-1;";
+          remarksSpan.textContent = m.remarks;
+          item.appendChild(remarksSpan);
+        }
+
+        list.appendChild(item);
+      });
+  } catch (err) {
+    elements.adminTodayMaintenanceList.innerHTML = "<p class='muted'>Failed to load maintenance.</p>";
+  }
+};
+
 const showMaintenanceForSport = async (sport) => {
   try {
-    const maintenance = await api.getTomorrowMaintenance();
+    const maintenance = await api.getTodayMaintenance();
     const sportMaintenance = maintenance.filter((m) => {
       const courtType = m.court?.courtType || m.court?.courtName?.toLowerCase() || "";
       return courtType === sport.toLowerCase();
     });
     if (sportMaintenance.length === 0) {
-      alert(`No maintenance scheduled for ${sport.toUpperCase()} tomorrow.`);
+      alert(`No maintenance scheduled for ${sport.toUpperCase()} today.`);
       return;
     }
-    let message = `${sport.toUpperCase()} Maintenance Tomorrow:\n\n`;
+    let message = `${sport.toUpperCase()} Maintenance Today:\n\n`;
     sportMaintenance.forEach((m) => {
       const start = new Date(m.startTime);
       const end = new Date(m.endTime);
@@ -393,6 +450,7 @@ const applyReservationFilters = () => {
   if (dateFilter === "today") {
     const todayKey = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Manila" });
     list = list.filter((b) => {
+      if (b.status === "cancelled") return false;
       const k = new Date(b.startTime).toLocaleDateString("en-CA", { timeZone: "Asia/Manila" });
       return k === todayKey;
     });
@@ -1042,6 +1100,7 @@ const loadDashboard = async () => {
     _latestReservations = allReservations || [];
     applyReservationFilters();
     renderStats(data.todayBookings || [], allReservations || []);
+    loadTodayMaintenance();
     // For the timeline we need availability info (availableHoursByDate) per court
     // Fetch availability for today's date so extend modal can check free hours
     let courtsWithAvail = courts;
